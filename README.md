@@ -1,0 +1,2 @@
+# Simple Language
+This is an attempt at building a simple language parser and runner in Java. This project uses the Antlr4 parser-generator and language engine for parsing, and Object Web's ASM for code generation.
