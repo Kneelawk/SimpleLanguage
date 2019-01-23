@@ -1,0 +1,45 @@
+import org.gradle.plugins.ide.eclipse.model.AbstractClasspathEntry
+
+plugins {
+	id 'java'
+	id 'antlr'
+	id 'eclipse'
+	id 'com.zyxist.chainsaw' version '0.3.1'
+	id 'org.beryx.jlink' version '2.4.0'
+}
+
+sourceCompatibility = 11
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+	jcenter()
+}
+
+dependencies {
+	antlr 'org.antlr:antlr4:4.7.2'
+
+	implementation 'org.ow2.asm:asm:7.0'
+	implementation 'org.apache.commons:commons-math3:3.6.1'
+	implementation 'com.google.guava:guava:27.0.1-jre'
+}
+
+application {
+	mainClassName = 'com.github.kneelawk.simplelanguage.SimpleLanguageMain'
+}
+
+jlink {
+	options = ['--compress', '2', '--no-header-files', '--no-man-pages']
+	launcher {
+		name = 'SimpleLanguage'
+	}
+}
+
+eclipse.classpath.file {
+	whenMerged { classpath ->
+		classpath.entries.each { entry ->
+			if (entry instanceof AbstractClasspathEntry) {
+				entry.entryAttributes << ['module': 'true']
+			}
+		}
+	}
+}
